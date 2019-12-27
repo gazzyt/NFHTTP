@@ -417,11 +417,16 @@ int CachingSQLiteDatabase::sqliteSelectVectorHTTPCallback(void *context,
 
 std::time_t CachingSQLiteDatabase::timeFromSQLDateTimeString(const std::string &date_time_string) {
   std::tm expiry_time_values = {};
+
+#ifndef _WIN32
   // TODO: Use sstream impl after we up to gcc >= 5
   strptime(date_time_string.c_str(), "%Y-%m-%d %H:%M:%S", &expiry_time_values);
-  //  std::istringstream expiry_stream(date_time_string);
-  //  expiry_stream.imbue(std::locale("en.utf-8"));
-  //  expiry_stream >> std::get_time(&expiry_time_values, "%Y-%m-%d %H:%M:%S");
+#else
+  std::istringstream expiry_stream(date_time_string);
+  expiry_stream.imbue(std::locale("en.utf-8"));
+  expiry_stream >> std::get_time(&expiry_time_values, "%Y-%m-%d %H:%M:%S");
+#endif  // !_WIN32
+
   return mktime(&expiry_time_values);
 }
 

@@ -1077,7 +1077,7 @@ if(USE_CURL)
 endif()
 
 # Conditionally add Microsoft's C++ Rest SDK
-if(USE_CPPRESTSDK)
+if(USE_CPPRESTSDK AND NOT VCPKG_TOOLCHAIN)
   set(CPPREST_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cpprestsdk/Release/include" CACHE STRING "C++ REST SDK Includes" FORCE)
   set(BOOST_LIBRARYDIR ${BOOST_LIB_DIR})
   set(CPPREST_INSTALL OFF CACHE BOOL "Don't install" FORCE)

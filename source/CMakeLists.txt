@@ -70,6 +70,10 @@ add_library(NFHTTP "${NFHTTP_INCLUDE_DIRECTORY}/NFHTTP/Client.h"
   "${NFHTTP_INCLUDE_DIRECTORY}/NFHTTP/NFHTTP.h"
   ${SOURCE_FILES})
 
+if(USE_CPPRESTSDK AND VCPKG_TOOLCHAIN)
+  find_package(cpprestsdk CONFIG REQUIRED)
+  target_link_libraries(NFHTTP PRIVATE cpprestsdk::cpprest)
+endif()
 
 target_include_directories(NFHTTP PUBLIC "${NFHTTP_INCLUDE_DIRECTORY}"
   "${NFHTTP_LIBRARIES_DIRECTORY}/sqlite"
@@ -97,7 +101,7 @@ if(USE_CURL)
   endif()
 endif()
 
-if(USE_CPPRESTSDK)
+if(USE_CPPRESTSDK AND NOT VCPKG_TOOLCHAIN)
   list(APPEND LINK_LIBRARIES cpprest)
 endif()
 
